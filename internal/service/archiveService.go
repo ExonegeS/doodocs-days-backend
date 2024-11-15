@@ -3,7 +3,6 @@ package service
 import (
 	"archive/zip"
 	"bytes"
-	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -22,14 +21,14 @@ func AnalyzeZipFile(zipFIle multipart.File, filename string) (models.Archive, er
 
 	fileData, err := io.ReadAll(zipFIle)
 	if err != nil {
-		return models.Archive{}, fmt.Errorf("failed to read uploaded file: %w", err)
+		return models.Archive{}, err
 	}
 
 	// Create a bytes.Reader for zip.NewReader
 	reader := bytes.NewReader(fileData)
 	zipReader, err := zip.NewReader(reader, int64(len(fileData)))
 	if err != nil {
-		return models.Archive{}, fmt.Errorf("unable to read zip file: %w", err)
+		return models.Archive{}, err
 	}
 
 	var totalSize float64
@@ -40,15 +39,7 @@ func AnalyzeZipFile(zipFIle multipart.File, filename string) (models.Archive, er
 		fileSize := float64(file.UncompressedSize64)
 		mimeType := detectZipMimeType(file)
 		switch mimeType {
-		case "application/octet-stream": // Directory
-		// case "image/png", "image/jpeg", "application/xml", "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-		// 	files = append(files, models.FileObject{
-		// 		FilePath: file.Name,
-		// 		Size:     fileSize,
-		// 		MimeType: mimeType,
-		// 	})
-		// default:
-		// 	return models.Archive{}, config.ErrMimeNotSupported
+		case "application/octet-stream": // Directory or empty file
 		default:
 			files = append(files, models.FileObject{
 				FilePath: file.Name,
@@ -105,9 +96,7 @@ func ConstructArchive(files []multipart.File, fileNames []string) ([]byte, error
 			return nil, config.ErrEmptyFile
 		}
 
-		// Could use here basic if statement, but nah, boring
-		mimeType := detectMimeType(file)
-		fmt.Println(mimeType, fileNames[i])
+		mimeType := detectMimeType(file, fileNames[i])
 		switch mimeType {
 		case "application/octet-stream":
 			w.Close()
@@ -152,7 +141,12 @@ func ConstructArchive(files []multipart.File, fileNames []string) ([]byte, error
 	return buf.Bytes(), nil
 }
 
-func detectMimeType(file multipart.File) string {
+func detectMimeType(file multipart.File, fileName string) string {
+	// Check file extension as a fallback if MIME type is not detected properly
+	if strings.HasSuffix(fileName, ".json") {
+		return "application/json"
+	}
+
 	// Seek to the beginning of the file
 	_, err := file.Seek(0, io.SeekStart)
 	if err != nil {
@@ -170,7 +164,23 @@ func detectMimeType(file multipart.File) string {
 	_, _ = file.Seek(0, io.SeekStart)
 
 	// Detect the MIME type
-	return http.DetectContentType(buffer)
+	mimeType := http.DetectContentType(buffer)
+
+	// If it returns "application/octet-stream", check if it's a JSON file by extension
+	if mimeType == "application/octet-stream" {
+		// If mimeType detection is not Success try to check the filename extention
+		switch {
+		case strings.HasSuffix(fileName, ".png"):
+			return "image/png"
+		case strings.HasSuffix(fileName, ".jpeg") || strings.HasSuffix(fileName, ".jpg"):
+			return "image/jpeg"
+		case strings.HasSuffix(fileName, ".xml"):
+			return "application/xml"
+		case strings.HasSuffix(fileName, ".docx") || strings.HasSuffix(fileName, ".doc"):
+			return "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+		}
+	}
+	return mimeType
 }
 
 func validateFileContent(file multipart.File, mimeType string) error {
