@@ -45,6 +45,10 @@ func ReadJSONFile(filepath string, v interface{}) error {
 	return json.Unmarshal(byteValue, v)
 }
 
+func ConvertToBinary(item interface{}) ([]byte, error) {
+	return json.Marshal(item)
+}
+
 func Itoa(num int) string {
 	return strconv.Itoa(num)
 }

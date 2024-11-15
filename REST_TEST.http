@@ -1,0 +1,93 @@
+### TEST ENDPOINT archive/information, TASK 1
+### Upload a good ZIP file
+POST http://127.0.0.1:6969/api/archive/information
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1234567890
+
+------WebKitFormBoundary1234567890
+Content-Disposition: form-data; name="file"; filename="./src/src.zip"
+Content-Type: application/zip
+
+< ./src/src.zip
+------WebKitFormBoundary1234567890--
+@src.zip
+--boundary12345--
+
+### Upload a bad ZIP file
+POST http://127.0.0.1:6969/api/archive/information
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1234567890
+
+------WebKitFormBoundary1234567890
+Content-Disposition: form-data; name="file"; filename="./src/src2.zip"
+Content-Type: application/zip
+
+< ./src/src2.zip
+------WebKitFormBoundary1234567890--
+@src.zip
+--boundary12345--
+
+
+### Upload a not ZIP file
+POST http://127.0.0.1:6969/api/archive/information
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1234567890
+
+------WebKitFormBoundary1234567890
+Content-Disposition: form-data; name="file"; filename="./src/logo.png"
+Content-Type: application/zip
+
+< ./src/logo.png
+------WebKitFormBoundary1234567890--
+@./src/logo.png
+--boundary12345--
+
+
+
+### TEST ENDPOINT archive/files, TASK 2
+
+### Upload a existing and supported files
+POST http://127.0.0.1:6969/api/archive/files
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+
+------CustomBoundary12345
+Content-Disposition: form-data; name="files[]"; filename="./src/logo.png"
+Content-Type: image/png
+
+< ./src/logo.png
+------CustomBoundary12345--
+
+### Upload a non-existing or empty supported files
+POST http://127.0.0.1:6969/api/archive/files
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+
+------CustomBoundary12345
+Content-Disposition: form-data; name="files[]"; filename="avatar.png"
+Content-Type: image/png
+
+< ./avatar.png
+------CustomBoundary12345
+Content-Disposition: form-data; name="files[]"; filename="document.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+< ./document.docx
+------CustomBoundary12345
+Content-Disposition: form-data; name="files[]"; filename="./src/logo.png"
+Content-Type: image/png
+
+< ./src/logo.png
+------CustomBoundary12345--
+
+
+### Upload a non supported files
+POST http://127.0.0.1:6969/api/archive/files
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+
+------CustomBoundary12345
+Content-Disposition: form-data; name="files[]"; filename="document.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+< ./document.docx
+------CustomBoundary12345
+Content-Disposition: form-data; name="files[]"; filename="avatar.png"
+Content-Type: image/png
+
+< ./avatar.png
+------CustomBoundary12345--
