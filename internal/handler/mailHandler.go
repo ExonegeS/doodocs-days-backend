@@ -1,8 +1,11 @@
 package handler
 
 import (
+	"fmt"
+	"io"
 	"net/http"
 
+	"github.com/exoneges/doodocs-days-backend/internal/config"
 	"github.com/exoneges/doodocs-days-backend/internal/service"
 	"github.com/exoneges/doodocs-days-backend/internal/utils"
 )
@@ -30,9 +33,33 @@ func postMailFile(w http.ResponseWriter, r *http.Request) {
 	// Retrieve the file from the form
 	file, header, err := r.FormFile("file")
 	if err != nil {
-		utils.SendJSONError(w, http.StatusBadRequest, err, "Failed retrieving ZIP file")
+		utils.SendJSONError(w, http.StatusBadRequest, err, "Failed retrieving file to send")
 		return
 	}
 
-	_, err = service.AnalyzeMailFile(file, header.Filename)
+	fileData, err := service.AnalyzeMailFile(file, header.Filename)
+	if err != nil {
+		switch err {
+		case config.ErrFormatNotSupported:
+			utils.SendJSONError(w, http.StatusBadRequest, err, "Unsupported file format")
+		default:
+			utils.SendJSONError(w, http.StatusInternalServerError, err, "Failed to analyze file to send")
+		}
+		return
+	}
+	_ = fileData
+
+	// Retrieve the emails from the form
+	receiversFile, header, err := r.FormFile("emails")
+	if err != nil {
+		utils.SendJSONError(w, http.StatusBadRequest, err, "Failed retrieving receivers emails file")
+		return
+	}
+	receiversData, err := io.ReadAll(receiversFile)
+	if err != nil {
+		utils.SendJSONError(w, http.StatusBadRequest, err, "Failed reading receivers emails file")
+		return
+	}
+
+	fmt.Println(receiversData)
 }

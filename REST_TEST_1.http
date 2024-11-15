@@ -9,8 +9,6 @@ Content-Type: application/zip
 
 < ./src/src.zip
 ------WebKitFormBoundary1234567890--
-@src.zip
---boundary12345--
 
 
 ### Upload a good ZIP file
@@ -23,8 +21,6 @@ Content-Type: application/zip
 
 < ./src/src2.zip
 ------WebKitFormBoundary1234567890--
-@src2.zip
---boundary12345--
 
 
 ### Upload a large ZIP file
@@ -37,8 +33,6 @@ Content-Type: application/zip
 
 < ./src/src3.zip
 ------WebKitFormBoundary1234567890--
-@src3.zip
---boundary12345--
 
 
 ### Upload a not ZIP file
@@ -51,5 +45,3 @@ Content-Type: application/zip
 
 < ./src/logo.png
 ------WebKitFormBoundary1234567890--
-@./src/logo.png
---boundary12345--

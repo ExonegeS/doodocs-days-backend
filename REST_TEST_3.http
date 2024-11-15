@@ -2,32 +2,56 @@
 
 ### Send email with a file attachment
 POST http://localhost:6969/api/mail/file
-Content-Type: multipart/form-data
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
 
---boundary12345
-Content-Disposition: form-data; name="file"; filename="document.docx"
+------CustomBoundary12345
+Content-Disposition: form-data; name="file"; filename="./src/document.docx"
 Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
 
-@document.docx
---boundary12345
+< ./src/document.docx
+------CustomBoundary12345
 Content-Disposition: form-data; name="emails"
 
 elonmusk@x.com,jeffbezos@amazon.com,zuckerberg@meta.com
---boundary12345--
+------CustomBoundary12345--
 
 
 ### Send email with file attachment and basic auth
 POST http://localhost:6969/api/mail/file
-Content-Type: multipart/form-data
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
 Authorization: Basic YWRtaW46cGFzc3dvcmQy
 
---boundary12345
-Content-Disposition: form-data; name="file"; filename="document.docx"
+------CustomBoundary12345
+Content-Disposition: form-data; name="file"; filename="./src/document.docx"
 Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
 
-@document.docx
---boundary12345
-Content-Disposition: form-data; name="emails"
+< ./src/document.docx
+------CustomBoundary12345
+Content-Disposition: form-data; name="emails"; filename="emails.txt"
+Content-Type: text/plain
 
-elonmusk@x.com,jeffbezos@amazon.com,zuckerberg@meta.com
---boundary12345--
+elonmusk@x.com
+jeffbezos@amazon.com
+zuckerberg@meta.com
+------CustomBoundary12345--
+
+
+
+### Send email with file attachment and basic auth
+POST http://localhost:6969/api/mail/file
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+Authorization: Basic YWRtaW46cGFzc3dvcmQy
+
+------CustomBoundary12345
+Content-Disposition: form-data; name="file"; filename="./src/logo.png"
+Content-Type: image/png
+
+< ./src/logo.png
+------CustomBoundary12345
+Content-Disposition: form-data; name="emails"; filename="emails.txt"
+Content-Type: text/plain
+
+elonmusk@x.com
+jeffbezos@amazon.com
+zuckerberg@meta.com
+------CustomBoundary12345--
