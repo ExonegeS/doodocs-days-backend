@@ -88,3 +88,4 @@ time=2024-11-16T02:16:32.887+05:00 level=INFO msg=Request From=127.0.0.1:62661 M
 time=2024-11-16T02:16:39.499+05:00 level=INFO msg=Request From=127.0.0.1:62663 Method=POST URL=/api/archive/files Additional=""
 time=2024-11-16T02:17:09.036+05:00 level=INFO msg=Request From=127.0.0.1:62669 Method=POST URL=/api/archive/files Additional=""
 time=2024-11-16T02:17:09.036+05:00 level=ERROR msg="this mimetype is not supported. Only: application/vnd.openxmlformats-officedocument.wordprocessingml.document | application/xml | image/jpeg | image/png"
+time=2024-11-16T02:40:45.726+05:00 level=INFO msg=Request From=127.0.0.1:63031 Method=POST URL=/api/mail/file Additional=""

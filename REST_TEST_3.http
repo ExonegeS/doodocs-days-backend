@@ -1,0 +1,33 @@
+### TEST ENDPOINT mail/file, TASK 3
+
+### Send email with a file attachment
+POST http://localhost:6969/api/mail/file
+Content-Type: multipart/form-data
+
+--boundary12345
+Content-Disposition: form-data; name="file"; filename="document.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+@document.docx
+--boundary12345
+Content-Disposition: form-data; name="emails"
+
+elonmusk@x.com,jeffbezos@amazon.com,zuckerberg@meta.com
+--boundary12345--
+
+
+### Send email with file attachment and basic auth
+POST http://localhost:6969/api/mail/file
+Content-Type: multipart/form-data
+Authorization: Basic YWRtaW46cGFzc3dvcmQy
+
+--boundary12345
+Content-Disposition: form-data; name="file"; filename="document.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+@document.docx
+--boundary12345
+Content-Disposition: form-data; name="emails"
+
+elonmusk@x.com,jeffbezos@amazon.com,zuckerberg@meta.com
+--boundary12345--
