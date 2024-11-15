@@ -95,10 +95,8 @@ func postArchiveFiles(w http.ResponseWriter, r *http.Request) {
 	archiveData, err := service.ConstructArchive(files, filenames)
 	if err != nil {
 		switch err {
-		case config.ErrInvalidZipFile:
+		case config.ErrCorruptedFileData:
 			utils.SendJSONError(w, http.StatusBadRequest, err, err.Error())
-		case config.ErrMimeNotSupported:
-			utils.SendJSONError(w, http.StatusNotAcceptable, err, err.Error())
 		default:
 			utils.SendJSONError(w, http.StatusInternalServerError, err, "Failed to analyze ZIP file")
 		}

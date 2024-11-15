@@ -41,14 +41,14 @@ func AnalyzeZipFile(zipFIle multipart.File, filename string) (models.Archive, er
 		mimeType := detectZipMimeType(file)
 		switch mimeType {
 		case "application/octet-stream": // Directory
-			// case "image/png", "image/jpeg", "application/xml", "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-			// 	files = append(files, models.FileObject{
-			// 		FilePath: file.Name,
-			// 		Size:     fileSize,
-			// 		MimeType: mimeType,
-			// 	})
-			// default:
-			// 	return models.Archive{}, config.ErrMimeNotSupported
+		// case "image/png", "image/jpeg", "application/xml", "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+		// 	files = append(files, models.FileObject{
+		// 		FilePath: file.Name,
+		// 		Size:     fileSize,
+		// 		MimeType: mimeType,
+		// 	})
+		// default:
+		// 	return models.Archive{}, config.ErrMimeNotSupported
 		default:
 			files = append(files, models.FileObject{
 				FilePath: file.Name,
@@ -107,8 +107,11 @@ func ConstructArchive(files []multipart.File, fileNames []string) ([]byte, error
 
 		// Could use here basic if statement, but nah, boring
 		mimeType := detectMimeType(file)
+		fmt.Println(mimeType, fileNames[i])
 		switch mimeType {
-		case "application/octet-stream": // Directory
+		case "application/octet-stream":
+			w.Close()
+			return nil, config.ErrCorruptedFileData
 		case "image/png", "image/jpeg", "application/xml", "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
 			err := validateFileContent(file, mimeType)
 			if err != nil {

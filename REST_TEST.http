@@ -86,8 +86,8 @@ Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.doc
 
 < ./document.docx
 ------CustomBoundary12345
-Content-Disposition: form-data; name="files[]"; filename="avatar.png"
-Content-Type: image/png
+Content-Disposition: form-data; name="files[]"; filename="data.json"
+Content-Type: application/json
 
-< ./avatar.png
+< ./data.json
 ------CustomBoundary12345--
