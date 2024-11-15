@@ -22,3 +22,19 @@ func AnalyzeMailFile(file multipart.File, filename, contentType string) ([]byte,
 
 	return fileContent, nil
 }
+
+func AnalyzeMailReceivers(file multipart.File, filename, contentType string) ([]byte, error) {
+	switch contentType {
+	case "text/plain":
+		// Process futher
+	default:
+		return nil, config.ErrFormatNotSupported
+	}
+
+	fileContent, err := io.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+
+	return fileContent, nil
+}

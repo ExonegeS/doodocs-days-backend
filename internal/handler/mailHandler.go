@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 
 	"github.com/exoneges/doodocs-days-backend/internal/config"
@@ -55,7 +54,8 @@ func postMailFile(w http.ResponseWriter, r *http.Request) {
 		utils.SendJSONError(w, http.StatusBadRequest, err, "Failed retrieving receivers emails file")
 		return
 	}
-	receiversData, err := io.ReadAll(receiversFile)
+
+	receiversData, err := service.AnalyzeMailReceivers(receiversFile, header.Filename, header.Header.Get("Content-Type"))
 	if err != nil {
 		utils.SendJSONError(w, http.StatusBadRequest, err, "Failed reading receivers emails file")
 		return
