@@ -37,7 +37,7 @@ func postMailFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fileData, err := service.AnalyzeMailFile(file, header.Filename)
+	fileData, err := service.AnalyzeMailFile(file, header.Filename, header.Header.Get("Content-Type"))
 	if err != nil {
 		switch err {
 		case config.ErrFormatNotSupported:
@@ -61,5 +61,5 @@ func postMailFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(receiversData)
+	fmt.Println(string(receiversData))
 }

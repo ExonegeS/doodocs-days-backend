@@ -11,7 +11,7 @@ import (
 	"github.com/exoneges/doodocs-days-backend/models"
 )
 
-func AnalyzeZipFile(zipFIle multipart.File, filename string) (models.Archive, error) {
+func AnalyzeZipFile(zipFIle multipart.File, filename, contentType string) (models.Archive, error) {
 
 	// Check filename suffix
 	if !strings.HasSuffix(filename, ".zip") {
@@ -58,9 +58,9 @@ func AnalyzeZipFile(zipFIle multipart.File, filename string) (models.Archive, er
 	}, nil
 }
 
-func ConstructArchive(files []multipart.File, fileNames []string) ([]byte, error) {
+func ConstructArchive(files []multipart.File, fileNames, contentTypes []string) ([]byte, error) {
 
-	if len(files) != len(fileNames) {
+	if len(files) != len(fileNames) || len(files) != len(contentTypes) {
 		return nil, config.ErrWrongArraySize
 	}
 
@@ -78,17 +78,12 @@ func ConstructArchive(files []multipart.File, fileNames []string) ([]byte, error
 		if n == 0 {
 			return nil, config.ErrEmptyFile
 		}
-
-		mimeType := detectMimeType(file, fileNames[i])
-		switch mimeType {
+		switch contentTypes[i] {
 		case "application/octet-stream":
 			w.Close()
 			return nil, config.ErrCorruptedFileData
 		case "image/png", "image/jpeg", "application/xml", "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-			err := validateFileContent(file, mimeType)
-			if err != nil {
-				return nil, err
-			}
+
 			// Add the file to the archive.
 		default:
 			w.Close()

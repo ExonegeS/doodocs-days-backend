@@ -42,7 +42,7 @@ func postArchiveInformation(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	// Delegate processing to the service layer
-	archiveData, err := service.AnalyzeZipFile(file, header.Filename)
+	archiveData, err := service.AnalyzeZipFile(file, header.Filename, header.Header.Get("Content-Type"))
 	if err != nil {
 		switch err {
 		case config.ErrInvalidZipFile:
@@ -76,6 +76,7 @@ func postArchiveFiles(w http.ResponseWriter, r *http.Request) {
 
 	files := make([]multipart.File, 0)
 	filenames := make([]string, 0)
+	contentTypes := make([]string, 0)
 
 	formFiles, ok := r.MultipartForm.File["files[]"]
 	if !ok {
@@ -92,10 +93,11 @@ func postArchiveFiles(w http.ResponseWriter, r *http.Request) {
 		defer file.Close()
 		files = append(files, file)
 		filenames = append(filenames, fileHeader.Filename)
+		contentTypes = append(contentTypes, fileHeader.Header.Get("Content-Type"))
 	}
 
 	// Delegate processing to the service layer
-	archiveData, err := service.ConstructArchive(files, filenames)
+	archiveData, err := service.ConstructArchive(files, filenames, contentTypes)
 	if err != nil {
 		switch err {
 		case config.ErrCorruptedFileData:
