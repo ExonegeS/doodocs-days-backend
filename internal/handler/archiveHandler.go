@@ -11,6 +11,7 @@ import (
 )
 
 func SetMuxArchiveHanle(mux *http.ServeMux) {
+
 	mux.Handle("/api/archive/information", http.HandlerFunc(postArchiveInformation))
 	mux.Handle("/api/archive/information/", http.HandlerFunc(postArchiveInformation))
 
@@ -19,6 +20,7 @@ func SetMuxArchiveHanle(mux *http.ServeMux) {
 }
 
 func postArchiveInformation(w http.ResponseWriter, r *http.Request) {
+
 	utils.LogRequest(r, "")
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
@@ -26,7 +28,7 @@ func postArchiveInformation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Parse the multipart form
-	if err := r.ParseMultipartForm(10 << 20); err != nil { // 32 MB limit
+	if err := r.ParseMultipartForm(32 << 20); err != nil { // 32 MB limit
 		utils.SendJSONError(w, http.StatusBadRequest, err, "Unable to parse form")
 		return
 	}
@@ -59,6 +61,7 @@ func postArchiveInformation(w http.ResponseWriter, r *http.Request) {
 }
 
 func postArchiveFiles(w http.ResponseWriter, r *http.Request) {
+
 	utils.LogRequest(r, "")
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)

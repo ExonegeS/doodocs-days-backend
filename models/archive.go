@@ -13,7 +13,3 @@ type FileObject struct {
 	Size     float64 `json:"size" xml:"size"`
 	MimeType string  `json:"mimetype" xml:"Mimetype"`
 }
-
-type Sizer interface {
-	Size() float64
-}

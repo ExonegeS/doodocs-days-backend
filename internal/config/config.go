@@ -40,6 +40,7 @@ var (
 )
 
 func init() {
+
 	flag.Usage = func() {
 		fmt.Print(helpTxt)
 		os.Exit(0)
@@ -71,6 +72,7 @@ func init() {
 }
 
 func checkFlags() {
+
 	if len(flag.Args()) > 0 {
 		log.Fatalf("Unexpected argument: %v\n%s", flag.Args(), helpTxt)
 	}

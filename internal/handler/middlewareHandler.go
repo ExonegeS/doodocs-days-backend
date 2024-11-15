@@ -3,10 +3,14 @@ package handler
 import (
 	"net/http"
 	"os"
+
+	"github.com/exoneges/doodocs-days-backend/internal/utils"
 )
 
 func BasicAuthMiddleware(next http.Handler) http.Handler {
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		utils.LogRequest(r, "Middleware check")
 		// Extract username and password from the request's Basic Auth header
 		username, password, ok := r.BasicAuth()
 		// Check if Basic Auth is provided and if the credentials match the configured admin credentials
