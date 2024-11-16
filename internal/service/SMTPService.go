@@ -43,9 +43,24 @@ func SendEmailWithAttachment(file models.FileWithMeta, recipientEmails string) e
 	message.SetHeader("Subject", "Here is your file!")
 	message.SetBody("text/plain", "Please find the attached file.")
 
-	// Attach the file
-	message.AttachReader(file.Filename, file.File)
+	// Create temporary file to send
+	tempFile, err := os.CreateTemp(config.DIR, file.Filename+".*.temp")
+	if err != nil {
+		return err
+	}
 
+	// Write the desired content to the file
+
+	if _, err := tempFile.Write(data); err != nil {
+		tempFile.Close()
+		os.Remove(tempFile.Name())
+		return err
+	}
+
+	tempFile.Close()
+	defer os.Remove(tempFile.Name())
+	// Attach the file
+	message.Attach(tempFile.Name())
 	// Set up the SMTP dialer
 	// port, _ := strconv.Atoi(smtpPort) // Ensure smtpPort is converted to an integer
 	port := smtpPort

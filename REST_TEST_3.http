@@ -5,10 +5,10 @@ POST http://localhost:6969/api/mail/file
 Content-Type: multipart/form-data; boundary=----CustomBoundary12345
 
 ------CustomBoundary12345
-Content-Disposition: form-data; name="file"; filename="./src/document.docx"
-Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+Content-Disposition: form-data; name="file"; filename="./src/Ilya_G_Resume.pdf"
+Content-Type: application/pdf
 
-< ./src/document.docx
+< ./src/Ilya_G_Resume.pdf
 ------CustomBoundary12345
 Content-Disposition: form-data; name="emails"
 
@@ -22,10 +22,10 @@ Content-Type: multipart/form-data; boundary=----CustomBoundary12345
 Authorization: Basic YWRtaW46cGFzc3dvcmQy
 
 ------CustomBoundary12345
-Content-Disposition: form-data; name="file"; filename="./src/document.docx"
-Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+Content-Disposition: form-data; name="file"; filename="./src/Ilya_G_Resume.pdf"
+Content-Type: application/pdf
 
-< ./src/document.docx
+< ./src/Ilya_G_Resume.pdf
 ------CustomBoundary12345
 Content-Disposition: form-data; name="emails"; filename="emails.txt"
 Content-Type: text/plain
@@ -40,10 +40,10 @@ Content-Type: multipart/form-data; boundary=----CustomBoundary12345
 Authorization: Basic YWRtaW46cGFzc3dvcmQy
 
 ------CustomBoundary12345
-Content-Disposition: form-data; name="file"; filename="./src/document.docx"
-Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+Content-Disposition: form-data; name="file"; filename="./src/Ilya_G_Resume.pdf"
+Content-Type: application/pdf
 
-< ./src/document.docx
+< ./src/Ilya_G_Resume.pdf
 ------CustomBoundary12345
 Content-Disposition: form-data; name="emails"; filename="emails.txt"
 Content-Type: text/plain
@@ -77,10 +77,10 @@ Content-Type: multipart/form-data; boundary=----CustomBoundary12345
 Authorization: Basic YWRtaW46cGFzc3dvcmQy
 
 ------CustomBoundary12345
-Content-Disposition: form-data; name="file"; filename="./src/document.docx"
-Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+Content-Disposition: form-data; name="file"; filename="./src/Ilya_G_Resume.pdf"
+Content-Type: application/pdf
 
-< ./src/document.docx
+< ./src/Ilya_G_Resume.pdf
 ------CustomBoundary12345
 Content-Disposition: form-data; name="emails"; filename="emails.txt"
 Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
@@ -98,10 +98,10 @@ POST https://doodocs-days-backend.onrender.com/api/mail/file
 Content-Type: multipart/form-data; boundary=----CustomBoundary12345
 
 ------CustomBoundary12345
-Content-Disposition: form-data; name="file"; filename="./src/document.docx"
-Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+Content-Disposition: form-data; name="file"; filename="./src/Ilya_G_Resume.pdf"
+Content-Type: application/pdf
 
-< ./src/document.docx
+< ./src/Ilya_G_Resume.pdf
 ------CustomBoundary12345
 Content-Disposition: form-data; name="emails"
 
@@ -115,10 +115,10 @@ Content-Type: multipart/form-data; boundary=----CustomBoundary12345
 Authorization: Basic YWRtaW46cGFzc3dvcmQy
 
 ------CustomBoundary12345
-Content-Disposition: form-data; name="file"; filename="./src/document.docx"
-Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+Content-Disposition: form-data; name="file"; filename="./src/Ilya_G_Resume.pdf"
+Content-Type: application/pdf
 
-< ./src/document.docx
+< ./src/Ilya_G_Resume.pdf
 ------CustomBoundary12345
 Content-Disposition: form-data; name="emails"; filename="emails.txt"
 Content-Type: text/plain
@@ -133,10 +133,10 @@ Content-Type: multipart/form-data; boundary=----CustomBoundary12345
 Authorization: Basic YWRtaW46cGFzc3dvcmQy
 
 ------CustomBoundary12345
-Content-Disposition: form-data; name="file"; filename="./src/document.docx"
-Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+Content-Disposition: form-data; name="file"; filename="./src/Ilya_G_Resume.pdf"
+Content-Type: application/pdf
 
-< ./src/document.docx
+< ./src/Ilya_G_Resume.pdf
 ------CustomBoundary12345
 Content-Disposition: form-data; name="emails"; filename="emails.txt"
 Content-Type: text/plain
