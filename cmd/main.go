@@ -15,6 +15,7 @@ func main() {
 
 	handler.SetMuxArchiveHanle(mux)
 	handler.SetMuxMailHanle(mux)
+	handler.SetMuxAdminHanle(mux)
 
 	server := &http.Server{
 		Addr:           fmt.Sprintf(":%v", config.PORT),
