@@ -44,3 +44,52 @@ Content-Type: application/json
 
 < ./src/data.json
 ------CustomBoundary12345--
+
+
+
+### ON Render.com TEST ENDPOINT archive/files, TASK 2
+
+### Upload a existing and supported files
+POST https://doodocs-days-backend.onrender.com/api/archive/files
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+
+------CustomBoundary12345
+Content-Disposition: form-data; name="files[]"; filename="./src/logo.png"
+Content-Type: image/png
+
+< ./src/logo.png
+------CustomBoundary12345--
+
+
+### Upload a non-existing or empty supported files
+POST https://doodocs-days-backend.onrender.com/api/archive/files
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+
+------CustomBoundary12345
+Content-Disposition: form-data; name="files[]"; filename="avatar.png"
+Content-Type: image/png
+
+< ./avatar.png
+------CustomBoundary12345
+Content-Disposition: form-data; name="files[]"; filename="document.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+< ./document.docx
+------CustomBoundary12345
+Content-Disposition: form-data; name="files[]"; filename="./src/logo.png"
+Content-Type: image/png
+
+< ./src/logo.png
+------CustomBoundary12345--
+
+
+### Upload a non supported files
+POST https://doodocs-days-backend.onrender.com/api/archive/files
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+
+------CustomBoundary12345
+Content-Disposition: form-data; name="files[]"; filename="./src/data.json"
+Content-Type: application/json
+
+< ./src/data.json
+------CustomBoundary12345--

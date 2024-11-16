@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/exoneges/doodocs-days-backend/internal/config"
 	"github.com/exoneges/doodocs-days-backend/models"
 	gomail "gopkg.in/mail.v2"
 )
@@ -18,6 +19,14 @@ var (
 )
 
 func SendEmailWithAttachment(file models.FileWithMeta, recipientEmails string) error {
+	data, err := AnalyzeMailFile(file)
+	if err != nil {
+		return err
+	}
+	if len(data) < 1 {
+		return config.ErrEmptyFile
+	}
+
 	// Parse the email list
 	emails := strings.Split(recipientEmails, ",")
 	for _, email := range emails {

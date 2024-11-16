@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/exoneges/doodocs-days-backend/internal/config"
@@ -37,20 +36,10 @@ func postMailFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fileData, err := service.AnalyzeMailFile(models.FileWithMeta{
+	fileToSend := models.FileWithMeta{
 		File:        file,
 		Filename:    header.Filename,
-		ContentType: header.Header.Get("Content-Type")})
-	if err != nil {
-		switch err {
-		case config.ErrFormatNotSupported:
-			utils.SendJSONError(w, http.StatusBadRequest, err, "Unsupported file format")
-		default:
-			utils.SendJSONError(w, http.StatusInternalServerError, err, "Failed to analyze file to send")
-		}
-		return
-	}
-	_ = fileData
+		ContentType: header.Header.Get("Content-Type")}
 
 	// Retrieve the emails from the form
 	receiversFile, header, err := r.FormFile("emails")
@@ -68,10 +57,15 @@ func postMailFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(string(receiversData))
-
-	service.SendEmailWithAttachment(models.FileWithMeta{
-		File:        file,
-		Filename:    header.Filename,
-		ContentType: header.Header.Get("Content-Type")}, string(receiversData))
+	err = service.SendEmailWithAttachment(fileToSend, string(receiversData))
+	if err != nil {
+		switch err {
+		case config.ErrEmptyFile:
+			utils.SendJSONError(w, http.StatusBadRequest, err, "File is empty")
+		case config.ErrFormatNotSupported:
+			utils.SendJSONError(w, http.StatusBadRequest, err, "Unsupported file format")
+		default:
+			utils.SendJSONError(w, http.StatusInternalServerError, err, "Failed to analyze file to send")
+		}
+	}
 }
