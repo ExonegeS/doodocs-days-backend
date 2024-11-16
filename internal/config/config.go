@@ -55,6 +55,7 @@ func init() {
 
 	checkFlags()
 
+	DIR_LOGGER = DIR + "/app.log"
 	if _, err := os.Stat(DIR_LOGGER); os.IsNotExist(err) {
 		os.WriteFile(DIR_LOGGER, []byte(""), 0o644)
 	}

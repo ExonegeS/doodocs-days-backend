@@ -16,7 +16,8 @@
 
 ---
 
-<p align="center"> Few lines describing your project.
+<p align="center"> 
+        Terms of reference from doodocs for an internship in the backend
     <br> 
 </p>
 
@@ -27,10 +28,11 @@
 - [Deployment](#deployment)
 - [Usage](#usage)
 - [Built Using](#built_using)
-<!-- - [TODO](../TODO.md) -->
-<!-- - [Contributing](../CONTRIBUTING.md) -->
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
+
+<!-- - [TODO](../TODO.md) -->
+<!-- - [Contributing](../CONTRIBUTING.md) -->
 
 ## 🧐 About <a name = "about"></a>
 
@@ -58,12 +60,6 @@ $env:DOODOCS_DAYS2_BACKEND_AUTH_PASSWORD = "PASSWORD_FOR_MIDDLEWARE_REQUEST"
 
 $env:DOODOCS_DAYS2_BACKEND_MAIL_USERNAME = "USERNAME_FOR_SMTP_REQUEST"
 $env:DOODOCS_DAYS2_BACKEND_MAIL_PASSWORD = "APP_PASSWORD_FOR_SMTP_REQUEST"
-```
-
-Install dependences
-
-```
-go get gopkg.in/mail.v2  
 ```
 
 Build the project
@@ -122,7 +118,8 @@ Doodocs days-2 backend project
 REST API Endpoints:
 - 
 Request
-```POST /api/archive/information HTTP/1.1
+```
+POST /api/archive/information HTTP/1.1
 Content-Type: multipart/form-data; boundary=-{some-random-boundary}
 
 -{some-random-boundary}
@@ -134,7 +131,8 @@ Content-Type: application/zip
 ```
 Responce
 
-```HTTP/1.1 200 OK
+```
+HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
@@ -158,7 +156,8 @@ Content-Type: application/json
 ```
 
 Request
-```POST /api/archive/files HTTP/1.1
+```
+POST /api/archive/files HTTP/1.1
 Content-Type: multipart/form-data; boundary=-{some-random-boundary}
 
 -{some-random-boundary}
@@ -175,15 +174,18 @@ Content-Type: image/png
 ```
 Responce
 
-```HTTP/1.1 200 OK
+```
+HTTP/1.1 200 OK
 Content-Type: application/zip
 
 {Binary data of ZIP file}
 ```
 
 Request
-```POST /api/mail/file HTTP/1.1
+```
+POST /api/mail/file HTTP/1.1
 Content-Type: multipart/form-data; boundary=-{some-random-boundary}
+Authorization: Basic xxxxxxxxxxx(64encoding)
 
 -{some-random-boundary}
 Content-Disposition: form-data; name="file"; filename="document.docx"
@@ -202,6 +204,20 @@ Responce
 HTTP/1.1 200 OK
 ```
 
+Request
+```
+GET /api/admin/log HTTP/1.1
+Content-Type: multipart/form-data
+Authorization: Basic xxxxxxxxxxx(64encoding)
+```
+Responce
+
+```
+HTTP/1.1 200 OK
+Content-Type: text/plain
+
+{Binary data of app.log file}
+```
 ## 🚀 Deployment <a name = "deployment"></a>
 
 <!-- Add additional notes about how to deploy this on a live system. -->
@@ -209,11 +225,7 @@ HTTP/1.1 200 OK
 ## ⛏️ Built Using <a name = "built_using"></a>
 
 - [Golang](https://go.dev/) - Language
-
-<!-- - [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment -->
+- [mail.v2](https://gopkg.in/mail.v2/) - SMTP requests
 
 ## ✍️ Authors <a name = "authors"></a>
 
