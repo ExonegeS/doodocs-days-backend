@@ -36,7 +36,7 @@ func AnalyzeZipFile(zipFIle models.FileWithMeta) (models.Archive, error) {
 		fileSize := float64(file.UncompressedSize64)
 		mimeType := detectZipMimeType(file)
 		switch mimeType {
-		case "application/octet-stream": // Directory or empty file
+		case "application/octet-stream": // Do not save info about directory or empty file (optional)
 		default:
 			files = append(files, models.FileObject{
 				FilePath: file.Name,
@@ -62,25 +62,13 @@ func ConstructArchive(files []models.FileWithMeta) ([]byte, error) {
 
 	// Create a new zip archive.
 	w := zip.NewWriter(buf)
+	defer w.Close()
+
 	for _, file := range files {
 
-		// Check that multipart.File is not empty file
-		buffer := make([]byte, 1) // Check only the first byte
-		n, _ := file.File.Read(buffer)
-		file.File.Seek(0, io.SeekStart) // Reset the file pointer
-		if n == 0 {
-			return nil, config.ErrEmptyFile
-		}
-		switch file.ContentType {
-		case "application/octet-stream":
-			w.Close()
-			return nil, config.ErrCorruptedFileData
-		case "image/png", "image/jpeg", "application/xml", "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-
-			// Add the file to the archive.
-		default:
-			w.Close()
-			return nil, config.ErrMimeNotSupported
+		err := checkFileForZip(file)
+		if err != nil {
+			return nil, err
 		}
 
 		// Create a new file in the ZIP archive.
@@ -110,4 +98,24 @@ func ConstructArchive(files []models.FileWithMeta) ([]byte, error) {
 
 	// Return the constructed archive as a byte slice.
 	return buf.Bytes(), nil
+}
+
+func checkFileForZip(file models.FileWithMeta) error {
+	// Check that multipart.File is not empty file
+	buffer := make([]byte, 1)
+	n, _ := file.File.Read(buffer)
+	file.File.Seek(0, io.SeekStart) // Reset the file pointer
+	if n == 0 {
+		return config.ErrEmptyFile
+	}
+	switch file.ContentType {
+	case "image/png", "image/jpeg", "application/xml", "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+		// Valid file; Add the file to the archive.
+		return nil
+	case "application/octet-stream":
+		return config.ErrCorruptedFileData
+
+	default:
+		return config.ErrMimeNotSupported
+	}
 }

@@ -12,10 +12,8 @@ import (
 )
 
 var (
-	smtpHost     = "smtp.gmail.com"
-	smtpPort     = 587
-	smtpUser     = os.Getenv("DOODOCS_DAYS2_BACKEND_MAIL_USERNAME")
-	smtpPassword = os.Getenv("DOODOCS_DAYS2_BACKEND_MAIL_PASSWORD")
+	smtpHost = "smtp.gmail.com"
+	smtpPort = 587
 )
 
 func SendEmailWithAttachment(file models.FileWithMeta, recipientEmails string) error {
@@ -38,7 +36,7 @@ func SendEmailWithAttachment(file models.FileWithMeta, recipientEmails string) e
 
 	// Create a new email message
 	message := gomail.NewMessage()
-	message.SetHeader("From", smtpUser)
+	message.SetHeader("From", config.ENV_MAIL_USER)
 	message.SetHeader("To", emails...)
 	message.SetHeader("Subject", "Here is your file!")
 	message.SetBody("text/plain", "Please find the attached file.")
@@ -64,7 +62,7 @@ func SendEmailWithAttachment(file models.FileWithMeta, recipientEmails string) e
 	// Set up the SMTP dialer
 	// port, _ := strconv.Atoi(smtpPort) // Ensure smtpPort is converted to an integer
 	port := smtpPort
-	dialer := gomail.NewDialer(smtpHost, port, smtpUser, smtpPassword)
+	dialer := gomail.NewDialer(smtpHost, port, config.ENV_MAIL_USER, config.ENV_MAIL_PASS)
 
 	// Send the email
 	if err := dialer.DialAndSend(message); err != nil {

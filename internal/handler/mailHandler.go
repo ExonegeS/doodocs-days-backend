@@ -65,7 +65,7 @@ func postMailFile(w http.ResponseWriter, r *http.Request) {
 		case config.ErrFormatNotSupported:
 			utils.SendJSONError(w, http.StatusBadRequest, err, "Unsupported file format")
 		default:
-			utils.SendJSONError(w, http.StatusInternalServerError, err, "Failed to analyze file to send")
+			utils.SendJSONError(w, http.StatusInternalServerError, err, "Failed sending file using SMTP")
 		}
 	}
 }

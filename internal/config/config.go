@@ -9,14 +9,18 @@ import (
 )
 
 var (
-	DIR        string
-	PORT       int
-	PROTECTED  bool
-	HELP       bool
-	DIR_LOGGER string = "./data/app.log"
-	LOGGER     *slog.Logger
-	LOGFILE    *os.File
-	helpTxt    string = `
+	DIR           string
+	PORT          int
+	PROTECTED     bool
+	HELP          bool
+	DIR_LOGGER    string = "./data/app.log"
+	LOGGER        *slog.Logger
+	ENV_AUTH_USER string = os.Getenv("DOODOCS_DAYS2_BACKEND_AUTH_USERNAME")
+	ENV_AUTH_PASS string = os.Getenv("DOODOCS_DAYS2_BACKEND_AUTH_PASSWORD")
+	ENV_MAIL_USER string = os.Getenv("DOODOCS_DAYS2_BACKEND_MAIL_USERNAME")
+	ENV_MAIL_PASS string = os.Getenv("DOODOCS_DAYS2_BACKEND_MAIL_PASSWORD")
+	LOGFILE       *os.File
+	helpTxt       string = `
 Doodocs days-2 backend project
 	
 	Usage:
@@ -28,15 +32,6 @@ Doodocs days-2 backend project
 		--porn N	Port number.
 		--dir S		Path to the data directory.	
 `
-)
-
-var (
-	ErrMimeNotSupported   error = fmt.Errorf("this mimetype is not supported. Only: application/vnd.openxmlformats-officedocument.wordprocessingml.document | application/xml | image/jpeg | image/png")
-	ErrFormatNotSupported error = fmt.Errorf("provided file has unsupported format")
-	ErrInvalidZipFile     error = fmt.Errorf("provided file is not ZIP archive")
-	ErrWrongArraySize     error = fmt.Errorf("unexpected or wrong size of array")
-	ErrEmptyFile          error = fmt.Errorf("file data is empty or file is missing")
-	ErrCorruptedFileData  error = fmt.Errorf("file data is empty or corrupted")
 )
 
 func init() {
