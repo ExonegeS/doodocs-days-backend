@@ -74,5 +74,4 @@ func postMailFile(w http.ResponseWriter, r *http.Request) {
 		File:        file,
 		Filename:    header.Filename,
 		ContentType: header.Header.Get("Content-Type")}, string(receiversData))
-	// service.SendSMTPold()
 }

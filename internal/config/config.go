@@ -17,7 +17,7 @@ var (
 	LOGGER     *slog.Logger
 	LOGFILE    *os.File
 	helpTxt    string = `
-	Doodocs days-2 backend project
+Doodocs days-2 backend project
 	
 	Usage:
 		server [--port <N>] [--dir [S]]

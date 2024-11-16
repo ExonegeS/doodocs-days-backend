@@ -61,16 +61,19 @@ $env:DOODOCS_DAYS2_BACKEND_MAIL_PASSWORD = "APP_PASSWORD_FOR_SMTP_REQUEST"
 ```
 
 Install dependences
-``
+
+```
 go get gopkg.in/mail.v2  
 ```
 
 Build the project
+
 ```
 go build -o server ./cmd/main.go
 ```
 
 Run it
+
 ```
 ./server.go
 ```
@@ -102,9 +105,102 @@ Give an example
 
 ## 🎈 Usage <a name="usage"></a>
 
+```
+$ ./app --help
+Doodocs days-2 backend project
 
-<!-- Add notes about how to use the system. -->
+    Usage:
+            server [--port <N>] [--dir [S]]
+            server --help
 
+    Options:
+            --help          Show this screen.
+            --porn N        Port number.
+            --dir S         Path to the data directory.
+```
+
+REST API Endpoints:
+- 
+Request
+```POST /api/archive/information HTTP/1.1
+Content-Type: multipart/form-data; boundary=-{some-random-boundary}
+
+-{some-random-boundary}
+Content-Disposition: form-data; name="file"; filename="my_archive.zip"
+Content-Type: application/zip
+
+{Binary data of ZIP file}
+-{some-random-boundary}--
+```
+Responce
+
+```HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "filename": "my_archive.zip",
+    "archive_size": 4102029.312,
+    "total_size": 6836715.52,
+    "total_files": 2,
+    "files": [
+        {
+            "file_path": "photo.jpg",
+            "size": 2516582.4,
+            "mimetype": "image/jpeg"
+        },
+        {
+            "file_path": "directory/document.docx",
+            "size": 4320133.12,
+            "mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        }
+    ]
+}
+```
+
+Request
+```POST /api/archive/files HTTP/1.1
+Content-Type: multipart/form-data; boundary=-{some-random-boundary}
+
+-{some-random-boundary}
+Content-Disposition: form-data; name="files[]"; filename="document.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+{Binary data of file}
+-{some-random-boundary}
+Content-Disposition: form-data; name="files[]"; filename="avatar.png"
+Content-Type: image/png
+
+{Binary data of file}
+-{some-random-boundary}--
+```
+Responce
+
+```HTTP/1.1 200 OK
+Content-Type: application/zip
+
+{Binary data of ZIP file}
+```
+
+Request
+```POST /api/mail/file HTTP/1.1
+Content-Type: multipart/form-data; boundary=-{some-random-boundary}
+
+-{some-random-boundary}
+Content-Disposition: form-data; name="file"; filename="document.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+{Binary data of file}
+-{some-random-boundary}
+Content-Disposition: form-data; name="emails"
+
+elonmusk@x.com,jeffbezos@amazon.com,zuckerberg@meta.com
+-{some-random-boundary}--
+```
+Responce
+
+```
+HTTP/1.1 200 OK
+```
 
 ## 🚀 Deployment <a name = "deployment"></a>
 
@@ -121,7 +217,9 @@ Give an example
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@exoneges](https://github.com/exoneges) - Code Writer
+- [![Status](https://img.shields.io/badge/github-exoneges-success?logo=github)](https://github.com/exoneges)
+- [![Status](https://img.shields.io/badge/alem-igussak-red?logo=github)](https://platform.alem.school/git/igussak)
+<a href="https://t.me/undefinedbro" target="_blank"><img src="https://img.shields.io/badge/telegram-@undefinedbro-blue?logo=Telegram" alt="Status" /></a>
 
 <!-- See also the list of [contributors](https://github.com/kylelobo/ -->
 

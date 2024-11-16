@@ -18,7 +18,7 @@ var (
 )
 
 func SendEmailWithAttachment(file models.FileWithMeta, recipientEmails string) error {
-	// Parse the email list (unchanged from the original logic)
+	// Parse the email list
 	emails := strings.Split(recipientEmails, ",")
 	for _, email := range emails {
 		_, err := mail.ParseAddress(email)
