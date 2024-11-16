@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/mail"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/exoneges/doodocs-days-backend/internal/config"
@@ -46,7 +47,7 @@ func SendEmailWithAttachment(file models.FileWithMeta, recipientEmails string) e
 	message.SetBody("text/plain", "Please find the attached file.")
 
 	// Create temporary file to send
-	tempFile, err := os.CreateTemp(config.DIR, file.Filename+".*.temp")
+	tempFile, err := os.Create(path.Join(config.DIR, file.Filename))
 	if err != nil {
 		return err
 	}
