@@ -75,7 +75,7 @@ go build -o server ./cmd/main.go
 Run it
 
 ```
-./server.go
+./server
 ```
 
 
@@ -106,7 +106,7 @@ Give an example
 ## 🎈 Usage <a name="usage"></a>
 
 ```
-$ ./app --help
+$ ./server --help
 Doodocs days-2 backend project
 
     Usage:
