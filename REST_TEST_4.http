@@ -1,0 +1,20 @@
+### TEST ENDPOINT mail/file, TASK 3
+
+### Request app.log file without authorization
+GET http://localhost:6969/api/admin/log
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+------CustomBoundary12345--
+
+
+### Request app.log file
+GET http://localhost:6969/api/admin/log
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+Authorization: Basic YWRtaW46cGFzc3dvcmQy
+------CustomBoundary12345--
+
+
+### Non-existing route request
+GET http://localhost:6969/api/admin/
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+Authorization: Basic YWRtaW46cGFzc3dvcmQy
+------CustomBoundary12345--
