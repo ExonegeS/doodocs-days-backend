@@ -25,7 +25,7 @@ func main() {
 		MaxHeaderBytes: 1 << 20, // 1MB
 	}
 
-	slog.Info("Starting srver on", "Port", config.PORT, "Dir", config.DIR, "ProtectedIP", config.PROTECTED)
+	slog.Info("Starting server on", "Port", config.PORT, "Dir", config.DIR, "ProtectedIP", config.PROTECTED)
 	defer config.LOGFILE.Close()
 
 	if err := server.ListenAndServe(); err != nil {
