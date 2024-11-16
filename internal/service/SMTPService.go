@@ -17,6 +17,10 @@ var (
 )
 
 func SendEmailWithAttachment(file models.FileWithMeta, recipientEmails string) error {
+	err := config.UpdateENV()
+	if err != nil {
+		return err
+	}
 	data, err := AnalyzeMailFile(file)
 	if err != nil {
 		return err

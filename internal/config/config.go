@@ -9,18 +9,14 @@ import (
 )
 
 var (
-	DIR           string
-	PORT          int
-	PROTECTED     bool
-	HELP          bool
-	DIR_LOGGER    string = "./data/app.log"
-	LOGGER        *slog.Logger
-	ENV_AUTH_USER string = os.Getenv("DOODOCS_DAYS2_BACKEND_AUTH_USERNAME")
-	ENV_AUTH_PASS string = os.Getenv("DOODOCS_DAYS2_BACKEND_AUTH_PASSWORD")
-	ENV_MAIL_USER string = os.Getenv("DOODOCS_DAYS2_BACKEND_MAIL_USERNAME")
-	ENV_MAIL_PASS string = os.Getenv("DOODOCS_DAYS2_BACKEND_MAIL_PASSWORD")
-	LOGFILE       *os.File
-	helpTxt       string = `
+	DIR        string
+	PORT       int
+	PROTECTED  bool
+	HELP       bool
+	DIR_LOGGER string = "./data/app.log"
+	LOGGER     *slog.Logger
+	LOGFILE    *os.File
+	helpTxt    string = `
 Doodocs days-2 backend project
 	
 	Usage:
@@ -65,6 +61,12 @@ func init() {
 	}
 
 	LOGGER = slog.New(slog.NewTextHandler(LOGFILE, nil))
+
+	err = UpdateENV()
+	if err != nil {
+		slog.Error("Failed to update environment variables:", "err:", err.Error())
+		return
+	}
 }
 
 func checkFlags() {
