@@ -48,6 +48,43 @@ Content-Type: application/zip
 ------WebKitFormBoundary1234567890--
 
 
+### Upload a ZIP bomb file
+POST http://127.0.0.1:6969/api/archive/information
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1234567890
+
+------WebKitFormBoundary1234567890
+Content-Disposition: form-data; name="file"; filename="./src/bomb1.zip"
+Content-Type: application/zip
+
+< ./src/bomb1.zip
+------WebKitFormBoundary1234567890--
+
+### Upload a larger ZIP bomb file
+POST http://127.0.0.1:6969/api/archive/information
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1234567890
+
+------WebKitFormBoundary1234567890
+Content-Disposition: form-data; name="file"; filename="./src/bomb2.zip"
+Content-Type: application/zip
+
+< ./src/bomb2.zip
+------WebKitFormBoundary1234567890--
+
+
+### Upload a enormous ZIP bomb file
+POST http://127.0.0.1:6969/api/archive/information
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1234567890
+
+------WebKitFormBoundary1234567890
+Content-Disposition: form-data; name="file"; filename="./src/bomb3.zip"
+Content-Type: application/zip
+
+< ./src/bomb3.zip
+------WebKitFormBoundary1234567890--
+
+
+
+
 
 ### ON Render.com TEST ENDPOINT archive/information, TASK 1
 
@@ -96,4 +133,38 @@ Content-Disposition: form-data; name="file"; filename="./src/logo.png"
 Content-Type: application/zip
 
 < ./src/logo.png
+------WebKitFormBoundary1234567890--
+
+### Upload a ZIP bomb file
+POST https://doodocs-days-backend.onrender.com/api/archive/information
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1234567890
+
+------WebKitFormBoundary1234567890
+Content-Disposition: form-data; name="file"; filename="./src/bomb1.zip"
+Content-Type: application/zip
+
+< ./src/bomb1.zip
+------WebKitFormBoundary1234567890--
+
+### Upload a larger ZIP bomb file
+POST https://doodocs-days-backend.onrender.com/api/archive/information
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1234567890
+
+------WebKitFormBoundary1234567890
+Content-Disposition: form-data; name="file"; filename="./src/bomb2.zip"
+Content-Type: application/zip
+
+< ./src/bomb2.zip
+------WebKitFormBoundary1234567890--
+
+
+### Upload a enormous ZIP bomb file
+POST https://doodocs-days-backend.onrender.com/api/archive/information
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1234567890
+
+------WebKitFormBoundary1234567890
+Content-Disposition: form-data; name="file"; filename="./src/bomb3.zip"
+Content-Type: application/zip
+
+< ./src/bomb3.zip
 ------WebKitFormBoundary1234567890--
