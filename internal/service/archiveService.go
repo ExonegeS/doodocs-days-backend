@@ -4,21 +4,19 @@ import (
 	"archive/zip"
 	"bytes"
 	"io"
-	"mime/multipart"
-	"strings"
 
 	"github.com/exoneges/doodocs-days-backend/internal/config"
 	"github.com/exoneges/doodocs-days-backend/models"
 )
 
-func AnalyzeZipFile(zipFIle multipart.File, filename, contentType string) (models.Archive, error) {
+func AnalyzeZipFile(zipFIle models.FileWithMeta) (models.Archive, error) {
 
 	// Check filename suffix
-	if !strings.HasSuffix(filename, ".zip") {
+	if zipFIle.ContentType != "application/zip" {
 		return models.Archive{}, config.ErrInvalidZipFile
 	}
 
-	fileData, err := io.ReadAll(zipFIle)
+	fileData, err := io.ReadAll(zipFIle.File)
 	if err != nil {
 		return models.Archive{}, err
 	}
@@ -50,7 +48,7 @@ func AnalyzeZipFile(zipFIle multipart.File, filename, contentType string) (model
 		totalSize += fileSize
 	}
 	return models.Archive{
-		Filename:    filename,
+		Filename:    zipFIle.Filename,
 		ArchiveSize: float64(len(fileData)), // Actual ZIP archive size
 		TotalSize:   totalSize,              // Total size of uncompressed files
 		TotalFiles:  float64(len(files)),
@@ -58,27 +56,22 @@ func AnalyzeZipFile(zipFIle multipart.File, filename, contentType string) (model
 	}, nil
 }
 
-func ConstructArchive(files []multipart.File, fileNames, contentTypes []string) ([]byte, error) {
-
-	if len(files) != len(fileNames) || len(files) != len(contentTypes) {
-		return nil, config.ErrWrongArraySize
-	}
-
+func ConstructArchive(files []models.FileWithMeta) ([]byte, error) {
 	// Create a buffer to write the archive to.
 	buf := new(bytes.Buffer)
 
 	// Create a new zip archive.
 	w := zip.NewWriter(buf)
-	for i, file := range files {
+	for _, file := range files {
 
 		// Check that multipart.File is not empty file
 		buffer := make([]byte, 1) // Check only the first byte
-		n, _ := file.Read(buffer)
-		file.Seek(0, io.SeekStart) // Reset the file pointer
+		n, _ := file.File.Read(buffer)
+		file.File.Seek(0, io.SeekStart) // Reset the file pointer
 		if n == 0 {
 			return nil, config.ErrEmptyFile
 		}
-		switch contentTypes[i] {
+		switch file.ContentType {
 		case "application/octet-stream":
 			w.Close()
 			return nil, config.ErrCorruptedFileData
@@ -91,13 +84,13 @@ func ConstructArchive(files []multipart.File, fileNames, contentTypes []string) 
 		}
 
 		// Create a new file in the ZIP archive.
-		f, err := w.Create(fileNames[i])
+		f, err := w.Create(file.Filename)
 		if err != nil {
 			return nil, err
 		}
 
 		// Read the content of the `multipart.File`.
-		fileContent, err := io.ReadAll(file)
+		fileContent, err := io.ReadAll(file.File)
 		if err != nil {
 			return nil, err
 		}

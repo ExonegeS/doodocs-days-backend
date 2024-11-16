@@ -16,7 +16,7 @@ elonmusk@x.com,jeffbezos@amazon.com,zuckerberg@meta.com
 ------CustomBoundary12345--
 
 
-### Send email with file attachment and basic auth
+### Send email with file attachment and basic auth to one receiver
 POST http://localhost:6969/api/mail/file
 Content-Type: multipart/form-data; boundary=----CustomBoundary12345
 Authorization: Basic YWRtaW46cGFzc3dvcmQy
@@ -30,9 +30,26 @@ Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.doc
 Content-Disposition: form-data; name="emails"; filename="emails.txt"
 Content-Type: text/plain
 
-2004gusak@gmail.com,ilya.gusak.2016@mail.ru
+2004gusak@gmail.com
 ------CustomBoundary12345--
 
+
+### Send email with file attachment and basic auth to multiple receivers
+POST http://localhost:6969/api/mail/file
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+Authorization: Basic YWRtaW46cGFzc3dvcmQy
+
+------CustomBoundary12345
+Content-Disposition: form-data; name="file"; filename="./src/document.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+< ./src/document.docx
+------CustomBoundary12345
+Content-Disposition: form-data; name="emails"; filename="emails.txt"
+Content-Type: text/plain
+
+ilya.gusak.2016@mail.ru,2004gusak@gmail.com
+------CustomBoundary12345--
 
 
 ### Send email with unsupported file attachment and basic auth

@@ -2,12 +2,12 @@ package handler
 
 import (
 	"encoding/json"
-	"mime/multipart"
 	"net/http"
 
 	"github.com/exoneges/doodocs-days-backend/internal/config"
 	"github.com/exoneges/doodocs-days-backend/internal/service"
 	"github.com/exoneges/doodocs-days-backend/internal/utils"
+	"github.com/exoneges/doodocs-days-backend/models"
 )
 
 func SetMuxArchiveHanle(mux *http.ServeMux) {
@@ -42,7 +42,11 @@ func postArchiveInformation(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	// Delegate processing to the service layer
-	archiveData, err := service.AnalyzeZipFile(file, header.Filename, header.Header.Get("Content-Type"))
+	archiveData, err := service.AnalyzeZipFile(models.FileWithMeta{
+		File:        file,
+		Filename:    header.Filename,
+		ContentType: header.Header.Get("Content-Type")})
+
 	if err != nil {
 		switch err {
 		case config.ErrInvalidZipFile:
@@ -74,9 +78,7 @@ func postArchiveFiles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := make([]multipart.File, 0)
-	filenames := make([]string, 0)
-	contentTypes := make([]string, 0)
+	files := make([]models.FileWithMeta, 0)
 
 	formFiles, ok := r.MultipartForm.File["files[]"]
 	if !ok {
@@ -91,13 +93,14 @@ func postArchiveFiles(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer file.Close()
-		files = append(files, file)
-		filenames = append(filenames, fileHeader.Filename)
-		contentTypes = append(contentTypes, fileHeader.Header.Get("Content-Type"))
+		files = append(files, models.FileWithMeta{
+			File:        file,
+			Filename:    fileHeader.Filename,
+			ContentType: fileHeader.Header.Get("Content-Type")})
 	}
 
 	// Delegate processing to the service layer
-	archiveData, err := service.ConstructArchive(files, filenames, contentTypes)
+	archiveData, err := service.ConstructArchive(files)
 	if err != nil {
 		switch err {
 		case config.ErrCorruptedFileData:

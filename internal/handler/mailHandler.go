@@ -7,6 +7,7 @@ import (
 	"github.com/exoneges/doodocs-days-backend/internal/config"
 	"github.com/exoneges/doodocs-days-backend/internal/service"
 	"github.com/exoneges/doodocs-days-backend/internal/utils"
+	"github.com/exoneges/doodocs-days-backend/models"
 )
 
 func SetMuxMailHanle(mux *http.ServeMux) {
@@ -36,7 +37,10 @@ func postMailFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fileData, err := service.AnalyzeMailFile(file, header.Filename, header.Header.Get("Content-Type"))
+	fileData, err := service.AnalyzeMailFile(models.FileWithMeta{
+		File:        file,
+		Filename:    header.Filename,
+		ContentType: header.Header.Get("Content-Type")})
 	if err != nil {
 		switch err {
 		case config.ErrFormatNotSupported:
@@ -55,11 +59,20 @@ func postMailFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	receiversData, err := service.AnalyzeMailReceivers(receiversFile, header.Filename, header.Header.Get("Content-Type"))
+	receiversData, err := service.AnalyzeMailReceivers(models.FileWithMeta{
+		File:        receiversFile,
+		Filename:    header.Filename,
+		ContentType: header.Header.Get("Content-Type")})
 	if err != nil {
 		utils.SendJSONError(w, http.StatusBadRequest, err, "Failed reading receivers emails file")
 		return
 	}
 
 	fmt.Println(string(receiversData))
+
+	service.SendEmailWithAttachment(models.FileWithMeta{
+		File:        file,
+		Filename:    header.Filename,
+		ContentType: header.Header.Get("Content-Type")}, string(receiversData))
+	// service.SendSMTPold()
 }
