@@ -51,10 +51,6 @@ go version 1.21+
 
 A step by step series of examples that tell you how to get a development env running.
 
-Build the project
-```
-go build -o server ./cmd/main.go
-```
 Setup the environment variables
 ```
 $env:DOODOCS_DAYS2_BACKEND_AUTH_USERNAME = "USERNAME_FOR_MIDDLEWARE_REQUEST"
@@ -62,6 +58,16 @@ $env:DOODOCS_DAYS2_BACKEND_AUTH_PASSWORD = "PASSWORD_FOR_MIDDLEWARE_REQUEST"
 
 $env:DOODOCS_DAYS2_BACKEND_MAIL_USERNAME = "USERNAME_FOR_SMTP_REQUEST"
 $env:DOODOCS_DAYS2_BACKEND_MAIL_PASSWORD = "APP_PASSWORD_FOR_SMTP_REQUEST"
+```
+
+Install dependences
+``
+go get gopkg.in/mail.v2  
+```
+
+Build the project
+```
+go build -o server ./cmd/main.go
 ```
 
 Run it
