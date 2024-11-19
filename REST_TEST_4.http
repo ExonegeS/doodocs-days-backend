@@ -18,3 +18,15 @@ GET http://localhost:6969/api/admin/
 Content-Type: multipart/form-data; boundary=----CustomBoundary12345
 Authorization: Basic YWRtaW46cGFzc3dvcmQy
 ------CustomBoundary12345--
+
+
+
+
+
+
+
+### Request app.log file
+GET https://doodocs-days-backend.onrender.com/api/admin/log
+Content-Type: multipart/form-data; boundary=----CustomBoundary12345
+Authorization: Basic YWRtaW46cGFzc3dvcmQy
+------CustomBoundary12345--
